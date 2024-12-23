@@ -1,9 +1,10 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Pokemon from '../models/pokemon';
-import POKEMONS from '../models/mock-pokemon';
 import formatDate from '../helpers/format-date';
 import formatType from '../helpers/format-type';
+import PokemonService from '../services/pokemon-service';
+import Loader from '../components/loader';
 
 type Params = { id: string };
 
@@ -12,8 +13,17 @@ const PokemonsDetail: FunctionComponent = () => {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
 
   useEffect(() => {
-    const foundPokemon = POKEMONS.find((pokemon) => pokemon.id.toString() === id);
-    setPokemon(foundPokemon || null);
+    // const foundPokemon = POKEMONS.find((pokemon) => pokemon.id.toString() === id);
+    // setPokemon(foundPokemon || null);
+    // fetch(`http://localhost:3001/pokemons/${id}`)
+    //   .then(response => response.json())
+    //   .then(pokemon => {
+    //     if(pokemon.id) setPokemon(pokemon)
+    //   });
+    if (id) {
+        const numericId = parseInt(id, 10); // Convertit l'id en nombre
+        PokemonService.getPokemon(numericId).then(pokemon => setPokemon(pokemon));
+      }
   }, [id]);
 
   return (
@@ -29,6 +39,10 @@ const PokemonsDetail: FunctionComponent = () => {
                   alt={pokemon.name}
                   style={{ width: '250px', margin: '0 auto' }}
                 />
+                 <Link to={`/pokemons/edit/${pokemon.id}`} 
+                 className="btn-floating halfway-fab waves-effect waves-light">
+                <i className="material-icons">edit</i>
+                </Link>
               </div>
               <div className="card-stacked">
                 <div className="card-content">
@@ -69,7 +83,7 @@ const PokemonsDetail: FunctionComponent = () => {
           </div>
         </div>
       ) : (
-        <h4 className="center">Aucun pokémon à afficher !</h4>
+        <h4 className="center"><Loader /></h4>
       )}
     </div>
   );
