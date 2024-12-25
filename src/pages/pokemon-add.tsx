@@ -4,8 +4,8 @@ import Pokemon from '../models/pokemon';
  
 const PokemonAdd: FunctionComponent = () => {
 
-    const [id] = useState<number>(new Date().getTime());
-    const [pokemon] = useState<Pokemon>(new Pokemon(id));
+    const [id] = useState<number>(new Date().getTime()); //Crée(genere) un ID unique en utilisant le timestamp actuel (nombre de millisecondes depuis 1970)
+    const [pokemon] = useState<Pokemon>(new Pokemon(id));//Crée un nouvel objet Pokémon avec l'ID généré et new Pokemon(id) crée une instance vierge d'un Pokémon avec juste l'ID
    
   return (
     <div className="row">

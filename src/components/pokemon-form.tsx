@@ -13,7 +13,7 @@ type Field = {
     isValid?: boolean
   };
   
-  type Form = {
+type Form = {
     picture: Field,
     name: Field,
     hp: Field,
@@ -30,7 +30,7 @@ const PokemonForm: FunctionComponent<Props> = ({pokemon, isEditForm}) => {
   
   const navigate = useNavigate();
 
-  const [form, setForm] = useState<Form>({
+const [form, setForm] = useState<Form>({
     picture: { value: pokemon.picture,  isValid: true },
     name: { value: pokemon.name, isValid: true },
     hp: { value: pokemon.hp, isValid: true },
@@ -65,7 +65,6 @@ const PokemonForm: FunctionComponent<Props> = ({pokemon, isEditForm}) => {
     setForm({...form, ...{ types: newField }});
   }
 
-
   const isAddForm = ()=> {
     return !isEditForm;
 }
@@ -87,7 +86,7 @@ const PokemonForm: FunctionComponent<Props> = ({pokemon, isEditForm}) => {
         const newField: Field = { value: form.picture.value, error: '', isValid: true };
         newForm = { ...newForm, ...{ picture: newField } };
       }
-    }
+}
 
     // Validator name
     if(!/^[a-zA-Zàéè ]{3,25}$/.test(form.name.value)) {
@@ -143,22 +142,16 @@ const PokemonForm: FunctionComponent<Props> = ({pokemon, isEditForm}) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    const isFormValid = validateForm();
+    if(isFormValid) {
+      pokemon.picture = form.picture.value;
+      pokemon.name = form.name.value;
+      pokemon.hp = parseInt(form.hp.value, 10);
+      pokemon.cp = parseInt(form.cp.value, 10);
+      pokemon.types = form.types.value;
+      isEditForm ? updatePokemon() : addPokemon();
+    }
 
-    const updatedPokemon = {
-      ...pokemon,
-      picture: form.picture.value,
-      name: form.name.value,
-      hp: parseInt(form.hp.value, 10),
-      cp: parseInt(form.cp.value, 10),
-      types: form.types.value
-    };
-
-    const action = isEditForm
-      ? PokemonService.updatePokemon(updatedPokemon)
-      : PokemonService.addPokemon(updatedPokemon);
-
-    action.then(() => navigate(isEditForm ? `/pokemons/${pokemon.id}` : '/pokemons'));
   };
     const addPokemon = () => {
     return PokemonService.addPokemon(pokemon).then(() => navigate(`/pokemons`));

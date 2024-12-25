@@ -1,5 +1,5 @@
-import { FunctionComponent, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Remplace useHistory
+import { FunctionComponent, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Pokemon from '../models/pokemon';
 import './card-pokomon.css';
 import formatDate from '../helpers/format-date';
@@ -11,27 +11,31 @@ type Props = {
 };
 
 const PokemonCard: FunctionComponent<Props> = ({ pokemon, borderColor = '#009688' }) => {
-  const [color, setColor] = useState<string>();
-  const navigate = useNavigate(); // Utilisation de useNavigate
+  const [color, setColor] = useState<string>('#f5f5f5');
+  const navigate = useNavigate();
 
   const showBorder = () => {
     setColor(borderColor);
   };
 
   const hideBorder = () => {
-    setColor('#f5f5f5'); // Met la bordure en gris
+    setColor('#f5f5f5');
   };
 
   const goToPokemon = (id: number) => {
-    navigate(`/pokemons/${id}`); // Utilisation de navigate
+    navigate(`/pokemons/${id}`);
   };
+
+  useEffect(() => {
+    setColor('#f5f5f5');
+  }, []);
 
   return (
     <div
       className="col s6 m4"
       onMouseEnter={showBorder}
       onMouseLeave={hideBorder}
-      onClick={() => goToPokemon(pokemon.id)} // Ajout de l'action de clic pour naviguer
+      onClick={() => goToPokemon(pokemon.id)}
     >
       <div className="card horizontal" style={{ borderColor: color }}>
         <div className="card-image">

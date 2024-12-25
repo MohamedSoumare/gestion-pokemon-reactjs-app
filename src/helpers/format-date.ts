@@ -6,7 +6,7 @@ const formatDate = (date: any): string => {
       console.error('Invalid date format:', date);
       return 'Invalid date';
     }
-    const day = date.getDate().toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0'); // Ensure day is always 2 digits 
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
     const year = date.getFullYear();
   

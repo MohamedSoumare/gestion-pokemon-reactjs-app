@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import PokemonSearch from '../components/pokemon-search';
 
 const PokemonList: FunctionComponent = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]); //Crée un état pokemons initialisé comme un tableau vide
   
   useEffect(() => {
     // setPokemons(POKEMONS);
@@ -16,7 +16,7 @@ const PokemonList: FunctionComponent = () => {
     //  setPokemons(pokemons);
     // });
     PokemonService.getPokemons().then(pokemons => setPokemons(pokemons));
-  }, []);
+  }, []);//S'exécute une seule fois au montage du composant (grâce au tableau de dépendances vide [])
   
   return (
     <div>
@@ -24,7 +24,7 @@ const PokemonList: FunctionComponent = () => {
       <div className="container"> 
         <div className="row"> 
           <PokemonSearch />
-        {pokemons.map(pokemon => (
+        {pokemons.map(pokemon => (//Utilise map pour afficher un PokemonCard pour chaque Pokémon
         //   <PokemonCard key={pokemon.id} pokemon={pokemon} borderColor="red"/>
           <PokemonCard key={pokemon.id} pokemon={pokemon} />
         ))}
